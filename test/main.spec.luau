@@ -53,7 +53,6 @@ function tests.cli_positionals_work(ass: test_types.Asserts)
 	end)
 
 	const parsed = mediator.parse(idk, { "0b101010", "0b101010" })
-	pp.print(parsed)
 	ass.eq(parsed.meow, 0b101010)
 	ass.eq(parsed.mrrp, "0b101010")
 end
@@ -67,7 +66,6 @@ function tests.cli_flags_work(ass: test_types.Asserts)
 	end)
 
 	const parsed = mediator.parse(idk, { "-h", "0b101010", "0b101010" })
-	pp.print(parsed)
 	ass.that(parsed.help, "parsed help mode")
 	ass.eq(parsed.meow, 0b101010)
 	ass.eq(parsed.mrrp, "0b101010")

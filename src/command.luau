@@ -254,6 +254,10 @@ const function constructor<name, cli>(
 		const option = options[name]
 
 		if option then
+			if (option :: typedef.Flag)._flag then
+				return true
+			end
+
 			const parsed = option._parse(ctx)
 
 			ctx.bump()
@@ -353,11 +357,20 @@ const function constructor<name, cli>(
 
 		for opt_name, opt in cli._option_set do
 			-- todo: maybe maintain a list of all the required ones so theyre easier to check
-			if (opt :: typedef.Required)._required then
-				if not output[opt._name] then
-					error(`missing a required {opt._typename} for arg {opt._name}`)
-				end
+			if not (opt :: typedef.Required)._required then
+				continue
 			end
+
+			if output[opt._name] ~= nil then
+				continue
+			end
+
+			if (opt :: typedef.Flag)._flag then
+				output[opt._name] = false
+				continue
+			end
+
+			error(`missing a required {opt._typename} for arg {opt._name}`)
 		end
 
 		return output
