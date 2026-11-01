@@ -1,0 +1,68 @@
+name: bug report
+description: report something which isnt behaving the way you expected
+type: bug
+labels: "triage"
+assignees: ["nnullcolumn"]
+body:
+    - type: markdown
+      attributes:
+          value: |
+              if this bug is not beta-exclusive, please visit [the public repository](https://github.com/coconut-crew/cli-parser/issues) instead.
+              please check if this bug is [already reported](https://github.com/coconut-crew/cli-parser/issues). if it is, upvote it with a :+1: reaction
+
+              if you want a new api or feature, please open a [discussion](https://github.com/coconut-crew/cli-parser/discussions/new/choose) instead.
+
+              if it is likely this bug is exploitable in software using mediator, please see our
+              security policy.
+
+              if you have multiple issues, please open them separately.
+    - type: dropdown
+      id: version
+      attributes:
+          label: "version(s)"
+          description: "please select the version you are experiencing issues with. the version can be found inside the module. if you know this happens for multiple versions, please select multiple. if the version(s) selected are inaccurate, it may take longer to find / fix this issue."
+          multiple: true
+          default: 0
+          options:
+              - other
+              - nightly
+              - n/a (latest beta)
+      validations:
+          required: true
+    - type: dropdown
+      id: feature
+      attributes:
+          label: "feature(s)"
+          description: "what behavior(s) are you experiencing an issue with? you can select multiple."
+          multiple: true
+          options:
+              - mutation queue
+              - querying
+              - error handling
+              - other / unknown
+      validations:
+          required: true
+    - type: textarea
+      attributes:
+          label: reproduction
+          description: a clear set of steps to cause the bug to happen ([luau playground](https://play.luau.org/) links, code fences, etc. are appreciated - avoid images). if your repro is long, it will take more time to triage or fix. please make sure the set of steps is as simple as possible and that someone without other information about your project can cause it to happen locally.
+          placeholder: |
+              luau playground link: https://play.luau.org/...
+
+              steps:
+              1. create a world with the default options
+              2. set `local component = world:ct()`
+              3. set `local entity = world:ent()`
+              4. call world:set(entity, component, 123) twice
+      validations:
+          required: true
+    - type: textarea
+      attributes:
+          label: currvent vs. expected behavior
+          description: |
+              current behavior ([luau playground](https://play.luau.org/) links, code fences, etc. are appreciated - avoid images) vs. what you expected the behavior to be.
+
+          placeholder: |
+              current behavior: set errors when called twice. expected behavior: set should not error. is this behavior a regression? (yes/no)
+      validations:
+          required: true
