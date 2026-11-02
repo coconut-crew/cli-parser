@@ -67,7 +67,7 @@ const function append_section(str: string, config: typedef.HelpGenConfig): strin
 	return str
 end
 
-const function arg_category(
+const function category(
 	usage_strings: { string },
 	category: string,
 	config: typedef.HelpGenConfig,
@@ -278,14 +278,14 @@ function module.cli_args(cli: typedef.Command, config: typedef.HelpGenConfig): s
 	local output = ``
 
 	if #required_strings ~= 0 then
-		output ..= arg_category(required_strings, config.args_args_text, config)
+		output ..= category(required_strings, config.args_args_text, config)
 		if #optional_strings ~= 0 then
 			output = append_section(output, config)
 		end
 	end
 
 	if #optional_strings ~= 0 then
-		output ..= arg_category(optional_strings, config.args_opts_text, config)
+		output ..= category(optional_strings, config.args_opts_text, config)
 	end
 
 	const positionals_strings: { string } = {}
@@ -313,7 +313,7 @@ function module.cli_args(cli: typedef.Command, config: typedef.HelpGenConfig): s
 
 	if #positionals_strings ~= 0 then
 		const categorized =
-			arg_category(positionals_strings, config.args_positionals_text, config)
+			category(positionals_strings, config.args_positionals_text, config)
 		output = `{categorized}\n\n{output}`
 	end
 
@@ -330,7 +330,7 @@ function module.cli_subcommands(
 		table.insert(usages, `{subcommand._name}; {subcommand.helpline}`)
 	end
 
-	return arg_category(usages, config.subcommands_text, config, -1)
+	return category(usages, config.subcommands_text, config, -1)
 end
 
 function module.cli_helpscreen(
