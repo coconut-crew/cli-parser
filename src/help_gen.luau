@@ -106,15 +106,15 @@ const function arg_category(
 		working_line, working_line_width = {}, 0
 	end
 
-	const lines_count = #lines
-	if lines_count == 0 then
-		return `{category}: ...none`
-	end
-
 	const prefix_len = #category
 	-- ansi codes add length to the prefix
 	const prefix = bold(category)
 	local suffix = ``
+
+	const lines_count = #lines
+	if lines_count == 0 then
+		return `{prefix}: ...none`
+	end
 
 	if lines_count == 1 then
 		return prefix .. dim(table.concat(lines[1], thin_separator))
