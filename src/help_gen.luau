@@ -117,7 +117,7 @@ const function arg_category(
 	local suffix = ``
 
 	if lines_count == 1 then
-		return bold(category) .. dim(table.concat(lines[1], thin_separator))
+		return prefix .. dim(table.concat(lines[1], thin_separator))
 	end
 
 	const newline = config.args_newline(prefix_len)
