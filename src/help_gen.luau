@@ -113,7 +113,7 @@ const function arg_category(
 
 	const lines_count = #lines
 	if lines_count == 0 then
-		return `{prefix} ...none`
+		return `{prefix} {dim(`( none )`)}`
 	end
 
 	if lines_count == 1 then
