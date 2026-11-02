@@ -23,6 +23,9 @@ function module.help_config(): typedef.HelpGenConfig
 		args_alignment = `never`,
 		args_aliases = true,
 
+		subcommands_enabled = true,
+		subcommands_text = `subcommands `,
+
 		args_separator = function(ideal_width: number): string
 			return string.rep(` `, ideal_width)
 		end,
@@ -67,9 +70,10 @@ end
 const function arg_category(
 	usage_strings: { string },
 	category: string,
-	config: typedef.HelpGenConfig
+	config: typedef.HelpGenConfig,
+	override_wrapping: number?
 ): string
-	const wrapping_size = config.args_column_wrapping
+	const wrapping_size = override_wrapping or config.args_column_wrapping
 	const thin_separator = config.args_separator(1)
 	const thin_separator_size = #thin_separator
 
@@ -316,6 +320,19 @@ function module.cli_args(cli: typedef.Command, config: typedef.HelpGenConfig): s
 	return output
 end
 
+function module.cli_subcommands(
+	cli: typedef.Command,
+	config: typedef.HelpGenConfig
+): string
+	const usages = {}
+
+	for _, subcommand in cli._subcommands do
+		table.insert(usages, `{subcommand._name}; {subcommand.helpline}`)
+	end
+
+	return arg_category(usages, config.subcommands_text, config, -1)
+end
+
 function module.cli_helpscreen(
 	cli: typedef.Command,
 	config: typedef.HelpGenConfig
@@ -333,6 +350,11 @@ function module.cli_helpscreen(
 	if config.args_enabled then
 		output ..= `\n\n`
 		output ..= module.cli_args(cli, config)
+	end
+
+	if config.subcommands_enabled then
+		output ..= `\n\n`
+		output ..= module.cli_subcommands(cli, config)
 	end
 
 	return output

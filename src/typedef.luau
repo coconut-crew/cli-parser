@@ -163,6 +163,10 @@ export type HelpGenConfig = {
 	args_column_wrapping: number,
 	args_alignment: "always" | "never",
 	args_aliases: boolean,
+
+	subcommands_enabled: boolean,
+	subcommands_text: string,
+
 	args_annotation: false | (args: { string }) -> string,
 	args_newline: (indentation: number) -> string,
 	args_separator: (ideal_width: number) -> string,
