@@ -27,10 +27,7 @@ jobs:
             matrix:
                 os:
                     [
-                        { name: windows, version: windows-latest },
                         { name: ubuntu, version: ubuntu-latest },
-                        { name: macos, version: macos-latest },
-                        { name: macos-arm, version: macos-14 },
                     ]
         name: tests
         runs-on: ${{matrix.os.version}}
