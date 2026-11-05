@@ -1,0 +1,12 @@
+name = "cli-parser"
+entry_point = "src/init.luau"
+
+[dependency.levenshtein_dist]
+remote = "https://github.com/coconut-crew/levenshtein-dist"
+branch = "main"
+commit = "f4dc93d7404c536d6e9eb03a23db1560e93ef232"
+
+[dependency.log]
+remote = "https://github.com/coconut-crew/log"
+branch = "main"
+commit = "1b08037c2179ce349f428d8f5a477da354d8818d"

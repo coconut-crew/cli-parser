@@ -1,6 +1,6 @@
 -- todo: update number parsing
 
-const levenshtein_dist = require(`@mediator/levenshtein_dist`)
+const levenshtein_dist = require(`@pkgs/levenshtein_dist`)
 const typedef = require("@mediator/typedef")
 
 const char = string.byte

@@ -1,5 +1,5 @@
+const levenshtein_dist = require("@pkgs/levenshtein_dist")
 const typedef = require(`@mediator/typedef`)
-const levenshtein_dist = require("@mediator/levenshtein_dist")
 
 const BYTE = string.byte :: (string, offset: number?, finish: number?) -> number
 const RAWGET =

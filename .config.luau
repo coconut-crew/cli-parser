@@ -1,6 +1,10 @@
 const luau_config: config_luau = {
 	languagemode = `strict`,
 
+	aliases = {
+		pkgs = "pkgs/links/",
+	},
+
 	lint = {
 		[`*`] = true,
 		[`LocalUnused`] = false,
