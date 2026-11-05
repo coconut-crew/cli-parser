@@ -1,15 +1,15 @@
 const mediator = require("@mediator/")
+const pathlib = require("@std/path")
 const pp = require("@ext/utils/pp")
 const test = require("@std/test")
 const test_types = require("@std/test/types")
-const pathlib = require("@std/path")
 
 const command, tpath, enum, parse =
 	mediator.command, mediator.tpath, mediator.enum, mediator.parse
 
 const tests = {}
 
-function tests.cli_opts_work(ass: test_types.Asserts)
+function tests.cli_opts_work(asserts: test_types.Asserts)
 	const dev = mediator.command("dev", function(cli)
 		tpath(cli.path, { "p" })
 		mediator.required(cli.path)
@@ -21,13 +21,13 @@ function tests.cli_opts_work(ass: test_types.Asserts)
 
 	const parsed = parse(dev, { "--path", "./meow", "--target", "dev-ALICE" })
 
-	ass.that(parsed, "non-nil parse result")
+	asserts.that(parsed, "non-nil parse result")
 
-	ass.eq(parsed.path, pathlib.parse("./meow"))
-	ass.eq(parsed.target, "dev-alice")
+	asserts.eq(parsed.path, pathlib.parse("./meow"))
+	asserts.eq(parsed.target, "dev-alice")
 end
 
-function tests.cli_shortopts_work(ass: test_types.Asserts)
+function tests.cli_shortopts_work(asserts: test_types.Asserts)
 	const aya = mediator.command("aya", function(cli)
 		mediator.tpath(cli.path, { "p" })
 		mediator.enum({ "idk", "idk2" }, "any_case")(cli.ex, { "x" })
@@ -35,17 +35,17 @@ function tests.cli_shortopts_work(ass: test_types.Asserts)
 
 	local parsed = mediator.parse(aya, { "-p", "./meow" })
 
-	ass.that(parsed, "non-nil parsed result from 1 shortopt")
-	ass.eq(parsed.path, pathlib.parse("./meow"))
+	asserts.that(parsed, "non-nil parsed result from 1 shortopt")
+	asserts.eq(parsed.path, pathlib.parse("./meow"))
 
 	parsed = mediator.parse(aya, { "-px", "./meow", "idk" })
-	ass.eq(parsed.path, pathlib.parse("./meow"))
-	ass.eq(parsed.ex, "idk")
+	asserts.eq(parsed.path, pathlib.parse("./meow"))
+	asserts.eq(parsed.ex, "idk")
 
-	ass.that(parsed, "non-nil parsed result from 2 shortopts")
+	asserts.that(parsed, "non-nil parsed result from 2 shortopts")
 end
 
-function tests.cli_positionals_work(ass: test_types.Asserts)
+function tests.cli_positionals_work(asserts: test_types.Asserts)
 	const idk = mediator.command("somecli", function(cli)
 		mediator.tnum(cli.meow)
 		mediator.positional(cli, cli.meow)
@@ -53,11 +53,11 @@ function tests.cli_positionals_work(ass: test_types.Asserts)
 	end)
 
 	const parsed = mediator.parse(idk, { "0b101010", "0b101010" })
-	ass.eq(parsed.meow, 0b101010)
-	ass.eq(parsed.mrrp, "0b101010")
+	asserts.eq(parsed.meow, 0b101010)
+	asserts.eq(parsed.mrrp, "0b101010")
 end
 
-function tests.cli_flags_work(ass: test_types.Asserts)
+function tests.cli_flags_work(asserts: test_types.Asserts)
 	const idk = mediator.command("somecli", function(cli)
 		mediator.tnum(cli.meow)
 		mediator.flag(cli.help, { "h" })
@@ -66,9 +66,9 @@ function tests.cli_flags_work(ass: test_types.Asserts)
 	end)
 
 	const parsed = mediator.parse(idk, { "-h", "0b101010", "0b101010" })
-	ass.that(parsed.help, "parsed help mode")
-	ass.eq(parsed.meow, 0b101010)
-	ass.eq(parsed.mrrp, "0b101010")
+	asserts.that(parsed.help, "parsed help mode")
+	asserts.eq(parsed.meow, 0b101010)
+	asserts.eq(parsed.mrrp, "0b101010")
 end
 
 const test_names = {}
