@@ -152,8 +152,9 @@ function module.parse<parsed>(command: typedef.Parser<parsed>, input: { string }
 			return output
 		end,
 		consume = function()
+			const output = ctx.peek()
 			ctx.bump()
-			return ctx.peek()
+			return output
 		end,
 		remaining = function()
 			return count - index
