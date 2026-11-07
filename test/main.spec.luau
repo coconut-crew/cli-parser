@@ -71,6 +71,43 @@ function tests.cli_flags_work(asserts: test_types.Asserts)
 	asserts.eq(parsed.mrrp, "0b101010")
 end
 
+function tests.subcommand_parses_args(asserts: test_types.Asserts)
+	const command = mediator.command("main", function(cli)
+		mediator
+			.command("sub", function(cli)
+				mediator.tnum(cli.nyanya)
+				mediator.positional(cli, cli.meow)
+			end)
+			.subcommandof(cli)
+	end)
+
+	const parsed = mediator.parse(command, { "sub", "--nyanya", "1234", "meowmeow" })
+
+	asserts.that(parsed.sub, "parsed the subcommand")
+	assert(parsed.sub)
+	asserts.eq(parsed.sub.meow, "meowmeow")
+	asserts.eq(parsed.sub.nyanya, 1234)
+end
+
+function tests.prioritize_positionals_over_subcommand(asserts: test_types.Asserts)
+	const command = mediator.command("main", function(cli)
+		mediator.positional(cli, cli.priority)
+
+		mediator
+			.command("sub", function(cli)
+				mediator.tnum(cli.nyanya)
+			end)
+			.subcommandof(cli)
+	end)
+
+	const parsed = mediator.parse(command, { "high", "sub", "--nyanya", "1e10" })
+
+	asserts.that(parsed.priority, "parsed positional in parent cmd")
+	asserts.that(parsed.sub, "parsed subcommand")
+	assert(parsed.sub)
+	asserts.eq(parsed.sub.nyanya, 1e10)
+end
+
 const test_names = {}
 
 for k, v in tests do
