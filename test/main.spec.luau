@@ -102,7 +102,7 @@ function tests.prioritize_positionals_over_subcommand(asserts: test_types.Assert
 
 	const parsed = mediator.parse(command, { "high", "sub", "--nyanya", "1e10" })
 
-	asserts.that(parsed.priority, "parsed positional in parent cmd")
+	asserts.eq(parsed.priority, "high")
 	asserts.that(parsed.sub, "parsed subcommand")
 	assert(parsed.sub)
 	asserts.eq(parsed.sub.nyanya, 1e10)
