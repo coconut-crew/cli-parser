@@ -114,7 +114,7 @@ const function constructor<name, cli>(
 				_option_set = {},
 				_option_list = {},
 				_positional_list = {},
-				_trailing_list = false,
+				_trailing_list = {},
 
 				_is_positional = false,
 				_typename = `# undefined #`,
@@ -273,7 +273,7 @@ const function constructor<name, cli>(
 		const output = {}
 
 		const positionals = cli._positional_list
-		const trails: { typedef.Arg } = cli._trailing_list or {}
+		const trails: { typedef.Arg } = {}
 		local positionals_left = #positionals
 		local trails_left = #trails
 
@@ -284,22 +284,27 @@ const function constructor<name, cli>(
 			const kind = parse_kind(peeked)
 
 			if kind == "postfix" then
-				if ctx.can_subcommand() then
+				if positionals_left > 0 then
+					positionals_left -= 1
+					const this = positionals[#positionals - positionals_left]
+
+					-- todo: if a positional is passed outright as an
+					-- option (our parser allows this for now), we
+					-- should prevent it from being accidentally
+					-- passed a second time here
+					output[this._name] = this._parse(ctx)
+
+					ctx.bump()
+				elseif trails_left > 0 then
+					trails_left -= 1
+					const this = trails[#trails - trails_left]
+
+					output[this._name] = this._parse(ctx)
+
+					ctx.bump()
+				else
 					output[peeked] = parse_subcommand(ctx)
 					break
-				else
-					if positionals_left > 0 then
-						positionals_left -= 1
-						const this = positionals[#positionals - positionals_left]
-
-						-- todo: if a positional is passed outright as an
-						-- option (our parser allows this for now), we
-						-- should prevent it from being accidentally
-						-- passed a second time here
-						output[this._name] = this._parse(ctx)
-
-						ctx.bump()
-					end
 				end
 			elseif kind == "opt" then
 				ctx.bump()

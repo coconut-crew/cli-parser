@@ -171,11 +171,6 @@ function module.parse<parsed>(command: typedef.Parser<parsed>, input: { string }
 		error = function(reason: string, offset: number?, ranges: { vector }?)
 			return error(ctx.problem(reason, offset, ranges))
 		end,
-		can_subcommand = function(...: boolean?): boolean
-			const c = command :: typedef.Arg
-			return #c._positional_list == 0
-				and (not c._trailing_list or #c._trailing_list == 0)
-		end,
 	}
 
 	return (command :: typedef.Command)._parse(ctx)

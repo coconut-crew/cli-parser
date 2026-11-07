@@ -18,7 +18,6 @@ end
 
 -- todo: add more context (so we can report e.g. "while parsing -p (type FilePath), ... happened")
 export type ParseContext = {
-	read can_subcommand: (boolean?) -> boolean,
 	read remaining: () -> number,
 	--[=[
 		returns the most recently consumed index (0 if none consumed yet)
@@ -72,7 +71,7 @@ export type Arg<result = unknown> = Parser<result> & {
 	_option_set: { [string]: Arg },
 
 	_positional_list: { Arg },
-	_trailing_list: { Arg } | false,
+	_trailing_list: { Arg },
 
 	_parse: ArgParser<result>,
 	_print: ArgPrinter<result>,
